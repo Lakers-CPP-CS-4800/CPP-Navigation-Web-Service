@@ -1,1 +1,3 @@
 For A3, I'm pretty sure we just need to add each of our own URLs to WebController.
+To see if your method works, type "localhost:8080/YourURL" into your browser where YourURL is the
+URL you specified above your method.
