@@ -10,4 +10,9 @@ public class WebController {
 	public String paytonHomePage() {
 		return "Welcome to Payton's Homepage! https://github.com/PaytonPerchez";
 	}
+
+	@GetMapping("/jordantbui")
+	public String jordanHomePage() {
+		return "Welcome to Jordan's Page (https://github.com/jordantbui)";
+	}
 }
