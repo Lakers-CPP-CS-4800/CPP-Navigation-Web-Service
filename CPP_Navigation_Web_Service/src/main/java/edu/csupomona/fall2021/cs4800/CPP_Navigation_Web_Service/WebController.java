@@ -20,4 +20,9 @@ public class WebController {
 	public String cfortinoHomePage() {
 		return "Hi, my name is C. Here's my github: https://github.com/Flores5505";
 	}
+	
+	@GetMapping("/ryanchiu")
+	public String ryanHomePage() {
+		return "Placeholder, you can check out my page for now: https://github.com/ryanchiu2017";
+	}
 }
