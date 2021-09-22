@@ -15,4 +15,9 @@ public class WebController {
 	public String jordanHomePage() {
 		return "Welcome to Jordan's Page (https://github.com/jordantbui)";
 	}
+
+	@GetMapping("/cfortinof")
+	public String jordanHomePage() {
+		return "Hi, my name is C. Here's my github: https://github.com/Flores5505";
+	}
 }
