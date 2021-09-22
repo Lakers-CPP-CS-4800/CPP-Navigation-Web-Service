@@ -17,7 +17,7 @@ public class WebController {
 	}
 
 	@GetMapping("/cfortinof")
-	public String jordanHomePage() {
+	public String cfortinoHomePage() {
 		return "Hi, my name is C. Here's my github: https://github.com/Flores5505";
 	}
 }
