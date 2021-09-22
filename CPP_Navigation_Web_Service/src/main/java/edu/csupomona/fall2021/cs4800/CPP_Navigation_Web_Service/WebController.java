@@ -25,4 +25,9 @@ public class WebController {
 	public String ryanHomePage() {
 		return "Placeholder, you can check out my page for now: https://github.com/ryanchiu2017";
 	}
+	
+	@GetMapping("/congzeng")
+	public String czengHomePage() {
+		return "Checkout my github: https://github.com/ZohnnyInc ";
+	}
 }
