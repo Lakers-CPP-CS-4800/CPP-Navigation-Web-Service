@@ -1,5 +1,6 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
+import org.apache.commons.math3.util.FastMath;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,11 @@ public class WebController {
 	@GetMapping("/congzeng")
 	public String czengHomePage() {
 		return "Checkout my github: https://github.com/ZohnnyInc ";
+	}
+	
+	@GetMapping("/PaytonPerchez/pi")
+	public String piApproximation() {
+		return "Approximation of pi using FastMath trigonometric functions: "
+				+ (100000.0 / FastMath.tan(FastMath.PI * (0.5 - (1.0 / 100000))));
 	}
 }
