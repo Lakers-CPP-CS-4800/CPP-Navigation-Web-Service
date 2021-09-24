@@ -37,4 +37,9 @@ public class WebController {
 		return "Approximation of pi using FastMath trigonometric functions: "
 				+ (100000.0 / FastMath.tan(FastMath.PI * (0.5 - (1.0 / 100000))));
 	}
+	
+	@GetMapping("/jordantbui/guava")
+	public boolean compareNull() {
+		return Objects.equal(null, "a"); // returns false
+	}
 }
