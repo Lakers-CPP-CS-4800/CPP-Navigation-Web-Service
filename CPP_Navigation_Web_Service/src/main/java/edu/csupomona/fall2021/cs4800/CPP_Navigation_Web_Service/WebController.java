@@ -1,5 +1,6 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,13 @@ public class WebController {
 	public String piApproximation() {
 		return "Approximation of pi using FastMath trigonometric functions: "
 				+ (100000.0 / FastMath.tan(FastMath.PI * (0.5 - (1.0 / 100000))));
+	}
+
+	@GetMapping("/cfortinof/dependency")
+	public String dependencies()
+	{
+		String path = "CPP-Navigation-Web-Service\\CPP_Navigation_Web_Service\\pom.xml";
+		return "Our dependencies are managed by maven in " + FilenameUtils.getName(path) + " .";
 	}
 	
 	@GetMapping("/jordantbui/guava")
