@@ -187,7 +187,7 @@ public class DijkstraAlgorithm {
 	 * @param W The weights of all paths.
 	 * @param F The final set of paths from the source vertex to all other vertices.
 	 */
-	private static void dijkstra(int n, int v, int[][] W, Edge[] F) {
+	public static void dijkstra(int n, int v, int[][] W, Edge[] F) {
 		
 		int vnear = v;
 		int[] touch = new int[n];
