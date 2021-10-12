@@ -2,7 +2,7 @@ package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.FastMath;
-import org.apache.commons.text.translate;
+//import org.apache.commons.text.translate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,7 +47,7 @@ public class WebController {
 		return "Our dependencies are managed by maven in " + FilenameUtils.getName(path) + " .";
 	}
 	
-	@GetMapping("/jordantbui/guava")
+	/*@GetMapping("/jordantbui/guava")
 	public boolean compareNull() {
 		return Objects.equal(null, "a"); // returns false
 	}
@@ -57,5 +57,5 @@ public class WebController {
 		UnicodeEscaper ue = UnicodeEscaper.above(0);
 		String result = ue.translate("ABCD");
     		assertEquals("\\u0041\\u0042\\u0043\\u0044", result);
-	}
+	}*/
 }
