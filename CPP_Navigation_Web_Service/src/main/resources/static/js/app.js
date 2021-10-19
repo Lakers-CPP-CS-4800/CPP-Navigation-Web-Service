@@ -40,5 +40,4 @@ function loadMap(){
 
 function adjustMapSize(){
 	$("#map").css("height",window.innerHeight + "px");
-	alert($("#map").css("height"));
 }
