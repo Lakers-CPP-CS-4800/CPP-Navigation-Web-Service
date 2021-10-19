@@ -11,13 +11,23 @@
 <body>
 
 	<div class="content content-container">
-		<div id="buttonBar" class="top-right">
-			<button id="toggleButtonBar">
+		<div id="navBar" class="top-right">
+		
+			<button id="toggleNavBar">
 				<span> &lt; </span>
 			</button>
-			<button id="loginButton" class="btn btn-info" style="margin: 0 auto;">CPP Login</button>
+			<div id="navDisplay">
+				<button id="cppLoginButton" class="btn btn-info" style="margin-bottom: 10px;">CPP Login</button>
+				<br/>
+				<label for="classList" style="float:none;"> Classes</label>
+				<button id="addClass" class="btn btn-success">+</button>
+				<div id="classList">
+									
+				</div>
+			</div>
+			
 		</div>
-		<div id="map" style="text-align:center; margin-top:50vh;">
+		<div id="map">
 			
 		</div>
 	</div>

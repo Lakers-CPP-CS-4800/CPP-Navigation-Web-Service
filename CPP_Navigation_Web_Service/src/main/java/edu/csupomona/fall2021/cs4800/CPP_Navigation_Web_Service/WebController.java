@@ -1,14 +1,18 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
+import java.io.InputStream;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.FastMath;
 //import org.apache.commons.text.translate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 @RestController
 public class WebController {
-
+	
 	@GetMapping("/PaytonPerchez")
 	public String paytonHomePage() {
 		return "Welcome to Payton's Homepage! https://github.com/PaytonPerchez";
@@ -45,6 +49,28 @@ public class WebController {
 	{
 		String path = "CPP-Navigation-Web-Service\\CPP_Navigation_Web_Service\\pom.xml";
 		return "Our dependencies are managed by maven in " + FilenameUtils.getName(path) + " .";
+	}
+	
+	@PostMapping("/js/getMap")
+	public String getMap() {
+		String map = readFile("/static/Temp.txt");
+		return map;
+	}
+	
+	public String readFile(String fileName) {
+		Resource resource  = new ClassPathResource(fileName);
+		String text;
+		
+		try {
+			InputStream inputStream = resource.getInputStream();
+			text = new String(inputStream.readAllBytes());
+			inputStream.close();
+		}
+		catch(Exception e){
+			text = e.toString();
+		}
+		
+		return text;
 	}
 	
 	/*@GetMapping("/jordantbui/guava")
