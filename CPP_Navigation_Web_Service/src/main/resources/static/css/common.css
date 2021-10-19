@@ -17,9 +17,10 @@ body {
 }
 
 #buttonBar {
+	z-index: 1;
 	width: 10vw;
 	height: 100vw;
-	margin-right: 10px;
+	margin-right: -10vw;
 	padding-top: 20px;
 	position: absolute;
 	background-color: rgba(26, 13, 0, 0.5);
@@ -42,5 +43,5 @@ body {
 }
 
 #toggleButtonBar:hover {
-	background-color: rgba(120, 116, 113, 0);
+	background-color: rgba(120, 116, 113, 1);
 }
