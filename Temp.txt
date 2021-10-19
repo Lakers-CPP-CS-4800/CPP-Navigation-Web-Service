@@ -1,0 +1,1 @@
+Static Map of CPP Campus: <iframe src="https://www.google.com/maps/d/embed?mid=1kgD7ZOhVb5AzQPSM_feUJVGlSe71rC4O&ll=34.058881%2C-117.819725&z=16" width="640" height="480"></iframe>
