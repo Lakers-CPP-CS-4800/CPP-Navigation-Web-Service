@@ -1,9 +1,10 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service.ShortestPath;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.jupiter.api.*;
 
 public class ShortestPathTest {
-	@Before
+	@BeforeEach
 	public void setup() {
 		System.out.println("Testing method..");
 	}
