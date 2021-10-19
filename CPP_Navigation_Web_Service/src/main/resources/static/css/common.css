@@ -3,23 +3,44 @@ body {
 }
 
 .content-container {
-	width: 95vw;
-	height: 95vh;
-	left: 2.5vw;
-	top: 2.5vh;
+	width: 100vw;
+	height: 100vh;
 	position: fixed;
 	background-color:white;
 	opacity: 0.90;
 }
 
 .top-right {
-	position: absolute;
 	top: 0px;
 	right:0px;
+	position: absolute;
 }
 
 #buttonBar {
-	width: 5vw;
+	width: 10vw;
+	height: 100vw;
 	margin-right: 10px;
-	margin-top: 10px;
+	padding-top: 20px;
+	position: absolute;
+	background-color: rgba(26, 13, 0, 0.5);
+	overflow-x: visible;
+	transition: 0.3s
+}
+
+#toggleButtonBar {
+	top: 50vh;
+	width: 25px;
+	height: 50px;
+	margin-left: -25px;
+	position:absolute;
+	background-color: rgba(26, 13, 0, 1);
+	border: none;
+	padding: auto;
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+}
+
+#toggleButtonBar:hover {
+	background-color: rgba(120, 116, 113, 0);
 }
