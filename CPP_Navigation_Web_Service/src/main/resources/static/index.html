@@ -11,16 +11,22 @@
 <body>
 
 	<div class="content content-container">
+		<div id="classMenu" style="display:none">
+			<input id="classSearchBar" type="text" placeholder="search for a class number or room id">
+			<hr/>
+		</div>
+		<div id="backdrop" style="display:none"></div>
+
 		<div id="navBar" class="top-right">
 		
 			<button id="toggleNavBar">
 				<span> &lt; </span>
 			</button>
 			<div id="navDisplay">
-				<button id="cppLoginButton" class="btn btn-info" style="margin-bottom: 10px;">Login</button>
+				<button id="cppLoginButton" class="btn btn-info" style="margin-bottom: 10px; visibility:hidden;">Login</button>
 				<br/>
 				<label for="classList" style="float:none;"> Classes</label>
-				<button id="addClass" class="btn btn-success">+</button>
+				<button id="addClass" class="btn btn-success" onclick="showClassMenu()">+</button>
 				<div id="classList">
 									
 				</div>

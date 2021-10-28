@@ -43,6 +43,11 @@ function adjustMapSize(){
 	$("#map").css("height",window.innerHeight + "px");
 }
 
+//classroom functions
+function showClassMenu(){
+	$("#classMenu").show();
+	$("#backdrop").show();
+}
 
 //cookie functions
 function readSavedClasses(){
@@ -70,5 +75,4 @@ function readCookies(c_name){
 		data = cookie_string.substring(begin + c_name.length + 1, end );
 	}
 	return data;
-  }
 }
