@@ -15,12 +15,15 @@ function init(){
 	loadMap();
 	adjustMapSize();
 	readSavedClasses();
+	if(window.innerWidth >= 800){
+		toggleBar();
+	}
 }
 
 function toggleBar(){
 	var bar = document.getElementById("navBar");
 	if(nav_bar_open){
-		bar.style.marginRight = "-10vw";
+		bar.style.marginRight = "-280px";
 	}
 	else{
 		bar.style.marginRight = "0";
@@ -47,6 +50,12 @@ function adjustMapSize(){
 function showClassMenu(){
 	$("#classMenu").show();
 	$("#backdrop").show();
+}
+
+function hideClassMenu(){
+	$("#classMenu").hide();
+	$("#backdrop").hide();
+	$("#classSearchBar").val('');
 }
 
 //cookie functions
