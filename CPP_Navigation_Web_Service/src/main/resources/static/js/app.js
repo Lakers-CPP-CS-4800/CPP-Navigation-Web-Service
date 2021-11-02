@@ -15,9 +15,9 @@ function init(){
 	loadMap();
 	adjustMapSize();
 	readSavedClasses();
-	if(window.innerWidth >= 800){
+	/*if(window.innerWidth >= 800){
 		toggleBar();
-	}
+	}*/
 }
 
 function toggleBar(){

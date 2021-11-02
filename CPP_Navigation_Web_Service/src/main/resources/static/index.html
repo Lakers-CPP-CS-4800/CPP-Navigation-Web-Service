@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/fontawesome/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="css/common.css">
 	<meta content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -14,10 +15,26 @@
 	<div class="content content-container">
 		<div id="classMenu" style="display:none">
 			<button class="top-right" onclick="hideClassMenu()">x</button>
-			<input id="classSearchBar" type="text" placeholder="search for a class number or room id">
+			<input id="classSearchBar" class="search-bar" type="text" placeholder="search for a class number or room id">
 			<hr/>
 		</div>
 		<div id="backdrop" style="display:none"></div>
+
+		<div id="topBar" class="">
+			<div id="mainSearchBar" class="search-bar">
+				<input id="instantSearchBar"  type="text" placeholder="search for a building or coordinates">
+				<button id="instantSearchButton">
+					<i class="fas fa-search"></i>
+					<span class="tooltip">Search</span>
+				</button>
+				
+				<button id="instantSearchGPSButton">
+					<i class="fas fa-location-arrow"></i>
+					<span class="tooltip">Use Current Location</span>
+				</button>
+				
+			</div>
+		</div>
 
 		<div id="navBar" class="top-right">
 		
@@ -25,10 +42,14 @@
 				<span> &lt; </span>
 			</button>
 			<div id="navDisplay">
+				<label for="destinationSearchBar" style="font-weight: bold; float:none;">Navigation</label>
+				
+				
+				<hr/>
 				<button id="cppLoginButton" class="btn btn-info" style="margin-bottom: 10px; visibility:hidden;">Login</button>
 				<br/>
-				<label for="classList" style="font-weight: bold; float:none;"> Classes</label>
-				<iframe class="spacer"></iframe>
+				<label for="classList" style="font-weight: bold; float:none;">Saved Classes</label>
+				<span class="spacer"></span>
 				<button id="addClass" class="btn btn-success" onclick="showClassMenu()">+</button>
 				<div id="classList">
 									
