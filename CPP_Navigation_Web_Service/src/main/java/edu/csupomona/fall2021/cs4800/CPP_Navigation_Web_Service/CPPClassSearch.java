@@ -48,7 +48,7 @@ class SectionDataDto(
     String sectionNumber;
     String classNumber;
     int capacity;
-    val title: String?,
+    String title;
     val units: Int?,
     val time: String?,
     val location: String?,
