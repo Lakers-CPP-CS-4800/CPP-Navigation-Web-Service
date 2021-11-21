@@ -56,6 +56,7 @@ class SectionDataDto{
     String catalogNumber;
     String instructorLast;
     String instructorFirst;
+
     /*
     String classNumber;
     String sectionNumber;
@@ -71,13 +72,18 @@ class SectionDataDto{
     */
 }
 
+
 fun extractSectionData(sectionElement: DomElement): SectionDataDto {
     val sectionTableData = sectionElement.getElementsByTagName("td")
     val course = sectionElement.childElements.first()
 
-    return SectionDataDto(
+    return SectionDataDto (
         subject = course.asNormalizedText().split(' ')[0],
         catalogNumber = course.asNormalizedText().split(' ')[1],
+        instructorLast = sectionTableData[8].textContent.split(",")[0].trim(),
+        instructorFirst = sectionTableData[8].textContent.split(",")[1].trim();
+
+        /*
         sectionNumber = course.nextSibling.asNormalizedText().split(' ')[1],
         classNumber = sectionTableData[0].textContent.trim(),
         capacity = sectionTableData[1].textContent.trim().toIntOrNull(),
@@ -87,9 +93,9 @@ fun extractSectionData(sectionElement: DomElement): SectionDataDto {
         location = sectionTableData[5].textContent.trim(),
         date = sectionTableData[6].textContent.trim(),
         session = sectionTableData[7].textContent.trim(),
-        instructorLast = sectionTableData[8].textContent.split(",")[0].trim(),
-        instructorFirst = sectionTableData[8].textContent.split(",")[1].trim(),
         mode = sectionTableData[9].textContent.split(",")[1].trim(),
         component = sectionTableData[9].textContent.split(",")[0].trim()
+        */
+
     )
 }
