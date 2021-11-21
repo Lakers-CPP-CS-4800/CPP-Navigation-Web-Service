@@ -1,5 +1,8 @@
+package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +16,17 @@ class CPPClassSearch {
     	
     	ArrayList<SectionDataDto> sectionList = new ArrayList<>();
     	WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
-        webClient.options.isCssEnabled = false;
-        webClient.options.isJavaScriptEnabled = false;
-        var searchPage = webClient.getPage<HtmlPage>("https://schedule.cpp.edu");
+//        webClient.options.isCssEnabled = false;
+//        webClient.options.isJavaScriptEnabled = false;
+        HtmlPage searchPage = webClient.getPage("https://schedule.cpp.edu");
 
-        searchParameters.forEach { searchPage.getElementById(it.key).setAttribute("value", it.value) }
+        for(int i = 0; i < searchParameters.size(); i++) {
+        	
+        	searchPage.getElementById(searchParameters.keySet()..key).setAttribute("value", it.value);
+        	
+        }// end for
+        searchPage.getElementById("#id");
+        searchParameters.forEach {  }
 
         HtmlSelect term = searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL")[0];
         HtmlOption opt = term.getOptionByValue(searchParameters["ctl00_ContentPlaceHolder1_TermDDL"]);
@@ -42,23 +51,23 @@ class CPPClassSearch {
     }
 }
 
-class SectionDataDto{
+class SectionDataDto(
     String subject;
     String catalogNumber;
     String sectionNumber;
     String classNumber;
     int capacity;
     String title;
-    int units;
-    int time;
-    String location;
-    String date;
-    String session;
-    String instructorLast;
-    String instructorFirst;
-    String mode;
-    String component;
-}
+    val units: Int?,
+    val time: String?,
+    val location: String?,
+    val date: String?,
+    val session: String?,
+    val instructorLast: String?,
+    val instructorFirst: String?,
+    val mode: String?,
+    val component: String?
+)
 
 fun extractSectionData(sectionElement: DomElement): SectionDataDto {
     val sectionTableData = sectionElement.getElementsByTagName("td")
