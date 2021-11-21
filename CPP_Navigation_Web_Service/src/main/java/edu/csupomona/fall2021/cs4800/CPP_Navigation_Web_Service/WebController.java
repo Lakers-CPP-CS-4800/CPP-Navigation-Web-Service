@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.HashMap;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.FastMath;

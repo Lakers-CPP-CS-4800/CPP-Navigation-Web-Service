@@ -42,6 +42,18 @@ function loadMap(){
 	});
 }
 
+function getInfo() {
+	
+	$.ajax({
+        type: "GET",
+        contentType: "application/json",
+		url: "/sections/" + $("#subject").value + "/" + $("#num").value,
+		success: function (data){
+			$("#map").html(data);
+		}
+	});
+}
+
 function adjustMapSize(){
 	$("#map").css("height",window.innerHeight + "px");
 }
