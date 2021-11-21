@@ -21,17 +21,15 @@ class CPPClassSearch {
 //        webClient.options.isJavaScriptEnabled = false;
         HtmlPage searchPage = webClient.getPage("https://schedule.cpp.edu");
 
-        for(int i = 0; i < searchParameters.size(); i++) {
+        for(Map.Entry<String, String> entry : searchParameters.entrySet()) {
         	
-        	searchPage.getElementById(searchParameters.keySet()..key).setAttribute("value", it.value);
+        	searchPage.getElementById(entry.getKey()).setAttribute("value", entry.getValue());
         	
         }// end for
-        searchPage.getElementById("#id");
-        searchParameters.forEach {  }
-
-        HtmlSelect term = searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL")[0];
-        HtmlOption opt = term.getOptionByValue(searchParameters["ctl00_ContentPlaceHolder1_TermDDL"]);
-        term.setSelectedAttribute<HtmlPage>(opt, true);
+        
+        HtmlSelect term = ((HtmlSelect) searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL").get(0));
+        HtmlOption opt = term.getOptionByValue(searchParameters.get("ctl00_ContentPlaceHolder1_TermDDL"));
+        term.setSelectedAttribute(opt, true);
 
 //        println(searchPage.getElementById("ctl00_ContentPlaceHolder1_TermDDL"));
 //
@@ -70,9 +68,9 @@ class SectionDataDto(
     val component: String?
 )
 
-fun extractSectionData(sectionElement: DomElement): SectionDataDto {
-    val sectionTableData = sectionElement.getElementsByTagName("td")
-    val course = sectionElement.childElements.first()
+public SectionDataDto extractSectionData(DomElement sectionElement) {
+    var sectionTableData = sectionElement.getElementsByTagName("td");
+    var course = sectionElement.childElements.first();
 
     return SectionDataDto(
         subject = course.asNormalizedText().split(' ')[0],
@@ -90,5 +88,5 @@ fun extractSectionData(sectionElement: DomElement): SectionDataDto {
         instructorFirst = sectionTableData[8].textContent.split(",")[1].trim(),
         mode = sectionTableData[9].textContent.split(",")[1].trim(),
         component = sectionTableData[9].textContent.split(",")[0].trim()
-    )
+    );
 }
