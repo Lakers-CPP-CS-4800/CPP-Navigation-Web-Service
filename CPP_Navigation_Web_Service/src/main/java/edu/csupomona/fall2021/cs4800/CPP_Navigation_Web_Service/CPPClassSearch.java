@@ -18,6 +18,12 @@ import java.util.regex.*;
 
 // http://localhost:8080/sections/cs/4800
 
+/**
+ * This class was HEAVILY inspired by the following repository:
+ * https://github.com/voidstarr/CPPScheduleAPI/blob/master/src/main/kotlin/com/broncomoredirect/api/CPPScheduleService.kt
+ * 
+ * Minor adjustments made to run in Java.
+ */
 @Service
 class CPPClassSearch {
     
