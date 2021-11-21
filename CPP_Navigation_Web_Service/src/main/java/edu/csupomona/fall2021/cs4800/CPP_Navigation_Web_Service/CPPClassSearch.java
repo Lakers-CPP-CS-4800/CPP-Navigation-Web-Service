@@ -51,23 +51,25 @@ class CPPClassSearch {
     }
 }
 
-class SectionDataDto(
+class SectionDataDto{
     String subject;
     String catalogNumber;
-    String sectionNumber;
+    String instructorLast;
+    String instructorFirst;
+    /*
     String classNumber;
+    String sectionNumber;
     int capacity;
     String title;
-    val units: Int?,
-    val time: String?,
-    val location: String?,
-    val date: String?,
-    val session: String?,
-    val instructorLast: String?,
-    val instructorFirst: String?,
-    val mode: String?,
-    val component: String?
-)
+    int units;
+    String time;
+    String location;
+    String date;
+    String session;
+    String mode;
+    String component;
+    */
+}
 
 fun extractSectionData(sectionElement: DomElement): SectionDataDto {
     val sectionTableData = sectionElement.getElementsByTagName("td")
