@@ -23,7 +23,7 @@
 		<div id="topBar" class="">
 			<div id="mainSearchBar" class="search-bar">
 				<input id="instantSearchBar"  type="text" placeholder="search for a building or coordinates">
-				<button id="instantSearchButton">
+				<button id="instantSearchButton" onclick="findBuilding()">
 					<i class="fas fa-search"></i>
 					<span class="tooltip">Search</span>
 				</button>
@@ -57,13 +57,15 @@
 			</div>
 			
 			<!-- Temporary elements for backend testing -->
-			<button id="button" onclick="getInfo();">
-			Get Classes
-			</button>
-			<input type="text" id="subject">
-			<input type="text" id="num">
-			<div id="jsonTest">
-			
+			<div>
+				<button id="button" onclick="getInfo();">
+					Get Classes
+				</button>
+				<input type="text" id="subject">
+				<input type="text" id="num">
+				<div id="jsonTest">
+				
+				</div>
 			</div>
 			
 		</div>
