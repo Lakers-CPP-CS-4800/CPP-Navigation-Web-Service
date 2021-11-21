@@ -50,31 +50,39 @@ class CPPClassSearch {
     }
 }
 
-class SectionDataDto(
+class SectionDataDto{
     String subject;
     String catalogNumber;
-    String sectionNumber;
+    String instructorLast;
+    String instructorFirst;
+
+    /*
     String classNumber;
+    String sectionNumber;
     int capacity;
     String title;
-    val units: Int?,
-    val time: String?,
-    val location: String?,
-    val date: String?,
-    val session: String?,
-    val instructorLast: String?,
-    val instructorFirst: String?,
-    val mode: String?,
-    val component: String?
-)
+    int units;
+    String time;
+    String location;
+    String date;
+    String session;
+    String mode;
+    String component;
+    */
+}
+
 
 public SectionDataDto extractSectionData(DomElement sectionElement) {
     var sectionTableData = sectionElement.getElementsByTagName("td");
     var course = sectionElement.childElements.first();
 
-    return SectionDataDto(
+    return SectionDataDto (
         subject = course.asNormalizedText().split(' ')[0],
         catalogNumber = course.asNormalizedText().split(' ')[1],
+        instructorLast = sectionTableData[8].textContent.split(",")[0].trim(),
+        instructorFirst = sectionTableData[8].textContent.split(",")[1].trim();
+
+        /*
         sectionNumber = course.nextSibling.asNormalizedText().split(' ')[1],
         classNumber = sectionTableData[0].textContent.trim(),
         capacity = sectionTableData[1].textContent.trim().toIntOrNull(),
@@ -84,9 +92,10 @@ public SectionDataDto extractSectionData(DomElement sectionElement) {
         location = sectionTableData[5].textContent.trim(),
         date = sectionTableData[6].textContent.trim(),
         session = sectionTableData[7].textContent.trim(),
-        instructorLast = sectionTableData[8].textContent.split(",")[0].trim(),
-        instructorFirst = sectionTableData[8].textContent.split(",")[1].trim(),
         mode = sectionTableData[9].textContent.split(",")[1].trim(),
         component = sectionTableData[9].textContent.split(",")[0].trim()
     );
+        */
+
+    )
 }
