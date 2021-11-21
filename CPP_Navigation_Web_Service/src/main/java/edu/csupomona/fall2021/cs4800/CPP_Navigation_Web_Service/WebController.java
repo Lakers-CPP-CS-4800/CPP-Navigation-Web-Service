@@ -1,14 +1,24 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.HashMap;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.FastMath;
 //import org.apache.commons.text.translate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 public class WebController {
@@ -72,6 +82,22 @@ public class WebController {
 		
 		return text;
 	}
+	
+	 @GetMapping("/sections/{subject}/{catalogNumber}")
+	 public ResponseEntity<List<SectionDataDto>> searchSections(
+	        @PathVariable("subject") String subject,
+	        @PathVariable("catalogNumber") String catalogNumber
+	    ) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+	        return ResponseEntity.ok(
+	            CPPClassSearch.getSections(
+	                CPPClassSearch.buildSearchParams(
+	                    ClassSubject.valueOf(subject.toUpperCase()),
+	                    catalogNumber,
+	                    ""
+	                )
+	            )
+	        );
+	    }
 	
 	/*@GetMapping("/jordantbui/guava")
 	public boolean compareNull() {
