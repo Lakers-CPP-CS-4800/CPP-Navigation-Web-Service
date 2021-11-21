@@ -13,34 +13,34 @@ class CPPClassSearch {
     
 	public List<SectionDataDto> getSections(Map<String, String> searchParameters) {
     	
-    	ArrayList<SectionDataDto>() sectionList = ArrayList<>();
-    	WebClient val webClient = WebClient(BrowserVersion.BEST_SUPPORTED)
-        webClient.options.isCssEnabled = false
-        webClient.options.isJavaScriptEnabled = false
-        val searchPage = webClient.getPage<HtmlPage>("https://schedule.cpp.edu")
+    	ArrayList<SectionDataDto> sectionList = new ArrayList<>();
+    	WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
+        webClient.options.isCssEnabled = false;
+        webClient.options.isJavaScriptEnabled = false;
+        var searchPage = webClient.getPage<HtmlPage>("https://schedule.cpp.edu");
 
         searchParameters.forEach { searchPage.getElementById(it.key).setAttribute("value", it.value) }
 
-        val term: HtmlSelect = searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL")[0] as HtmlSelect
-        val opt: HtmlOption = term.getOptionByValue(searchParameters["ctl00_ContentPlaceHolder1_TermDDL"])
-        term.setSelectedAttribute<HtmlPage>(opt, true)
+        HtmlSelect term = searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL")[0];
+        HtmlOption opt = term.getOptionByValue(searchParameters["ctl00_ContentPlaceHolder1_TermDDL"]);
+        term.setSelectedAttribute<HtmlPage>(opt, true);
 
-        println(searchPage.getElementById("ctl00_ContentPlaceHolder1_TermDDL"))
+//        println(searchPage.getElementById("ctl00_ContentPlaceHolder1_TermDDL"));
+//
+//        println(searchParameters);
 
-        println(searchParameters)
-
-        val resetForm = searchPage.getElementById("ctl00_ContentPlaceHolder1_Button4")
-        val submit = searchPage.getElementById("ctl00_ContentPlaceHolder1_SearchButton")
-        val resultsPage = submit.click<HtmlPage>()
-        println(resultsPage.body.visibleText)
+        var resetForm = searchPage.getElementById("ctl00_ContentPlaceHolder1_Button4");
+        var submit = searchPage.getElementById("ctl00_ContentPlaceHolder1_SearchButton");
+        var resultsPage = submit.click<HtmlPage>();
+        //println(resultsPage.body.visibleText);
         resultsPage.getByXPath<HtmlOrderedList>("/html/body/main/div/section/form/div[3]/ol").first()
             .getElementsByTagName("li").forEach {
                 sectionList.add(extractSectionData(it))
-                println(sectionList.last())
+                //println(sectionList.last());
             }
 
-        webClient.close()
-        return sectionList
+        webClient.close();
+        return sectionList;
     }
 }
 
