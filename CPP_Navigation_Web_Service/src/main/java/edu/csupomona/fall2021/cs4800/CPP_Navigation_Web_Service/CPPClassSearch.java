@@ -1,12 +1,10 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
+
 
 @Service
 class CPPClassSearch {
@@ -48,8 +46,8 @@ class SectionDataDto(
     String subject;
     String catalogNumber;
     String sectionNumber;
-    String classNumber: String?,
-    val capacity: Int?,
+    String classNumber;
+    int capacity;
     val title: String?,
     val units: Int?,
     val time: String?,
