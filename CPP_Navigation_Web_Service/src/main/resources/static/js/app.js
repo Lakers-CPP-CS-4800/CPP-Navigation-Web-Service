@@ -101,6 +101,26 @@ function getIndex(string) {
 	  */
 }
 
+// Creates markers on the map for every building at CPP
+function createMarkers() {
+	/*
+	const markers = [];
+    
+    for (let i = 0; i < locations.length; i++) {
+    	markers.push(
+    		new google.maps.Marker({
+    	       	position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+    	     	title: locations[i][0],
+    	     	map: map
+    	    })
+    	);
+    }
+    
+    // Hiding a marker
+    markers[0].setMap(null);
+    */
+}
+
 // Temporary function for backend testing
 function getInfo() {
 	//console.log(document.getElementById("subject").value + ", " + document.getElementById("num").value);
