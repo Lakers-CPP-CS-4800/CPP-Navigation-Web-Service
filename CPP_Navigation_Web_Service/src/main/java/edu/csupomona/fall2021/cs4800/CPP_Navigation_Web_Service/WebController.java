@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 
 @RestController
 public class WebController {
@@ -82,21 +81,24 @@ public class WebController {
 		return text;
 	}
 	
-	 @GetMapping("/sections/{subject}/{catalogNumber}")
-	 public ResponseEntity<List<SectionDataDto>> searchSections(
-	        @PathVariable("subject") String subject,
-	        @PathVariable("catalogNumber") String catalogNumber
-	    ) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
-	        return ResponseEntity.ok(
-	            CPPClassSearch.getSections(
-	                CPPClassSearch.buildSearchParams(
-	                    ClassSubject.valueOf(subject.toUpperCase()),
-	                    catalogNumber,
-	                    ""
-	                )
-	            )
-	        );
-	    }
+	// This method was taken from the following repository:
+	// https://github.com/voidstarr/CPPScheduleAPI/blob/master/src/main/kotlin/com/broncomoredirect/api/BroncoMoreDirectAPIApplication.kt
+	@GetMapping("/sections/{subject}/{catalogNumber}")
+	public ResponseEntity<List<SectionDataDto>> searchSections(
+		@PathVariable("subject") String subject,
+		@PathVariable("catalogNumber") String catalogNumber
+	) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+		
+		return ResponseEntity.ok(
+			CPPClassSearch.getSections(
+				CPPClassSearch.buildSearchParams(
+					ClassSubject.valueOf(subject.toUpperCase()),
+					catalogNumber,
+					null
+				)
+			)
+		);
+	}
 	
 	/*@GetMapping("/jordantbui/guava")
 	public boolean compareNull() {

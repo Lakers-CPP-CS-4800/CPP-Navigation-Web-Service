@@ -17,7 +17,7 @@
 		overflow-y:scroll;
 	}
 </style>
-					
+
 <body>
 
 	<div class="content content-container">
@@ -31,17 +31,19 @@
 		<div id="topBar" class="">
 			<div id="mainSearchBar" class="search-bar">
 				<input id="instantSearchBar"  type="text" placeholder="search for a building or coordinates">
-				<button id="instantSearchButton" onclick="findBuilding()">
+				<button id="instantSearchButton" onclick="searchBtnClick()">
 					<i class="fas fa-search"></i>
 					<span class="tooltip">Search</span>
 				</button>
 				
+				<!-- Checkbox -->
 				<div>
 					<input type="checkbox" id="checkbox" name="checkbox" onclick="checkboxClick()">
 					<label for="checkbox">Get directions to building</label>
 				</div>
 				
-				<div id="manualCurrentLocation">
+				<!-- Current location text field and GPS button -->
+				<div id="manualCurrentLocation" style="display: none">
 					<label for="currentLocation">Current Location: </label>
 					
 					<input type="text" id="currentLocation">
@@ -79,16 +81,15 @@
 				</div>
 			</div>
 			
-			<!-- Temporary elements for backend testing -->
+			<!-- Controls for finding course sections -->
 			<div>
-				<button id="button" onclick="getInfo();">
+				<button id="button" onclick="getCourseInfo()">
 					Get Classes
 				</button>
+				<label for="subject">Subject: </label>
 				<input type="text" id="subject">
+				<label for="num">Catalog #: </label>
 				<input type="text" id="num">
-				<div id="jsonTest">
-				
-				</div>
 			</div>
 			
 		</div>
@@ -102,7 +103,7 @@
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2T0FwKD5cIB0YtTcbMLP4uGhpNdf-En4&callback=initMap&libraries=&v=weekly"
 		async
-    ></script>
+	></script>
 	
 </body>
 </html>

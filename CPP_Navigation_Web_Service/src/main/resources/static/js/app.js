@@ -6,7 +6,7 @@ var directionsService;
 var directionsRenderer;
 var map;
 var locations;
-const markers = [];
+var markers = [];
 var currentLocation;
 var currentDestination;
 
@@ -23,6 +23,7 @@ function init(){
 	
 	//initialize the location array
 	loadLocations();
+	
 	adjustMapSize();
 	readSavedClasses();
 	/*if(window.innerWidth >= 800){
@@ -39,249 +40,6 @@ function toggleBar(){
 		bar.style.marginRight = "0";
 	}
 	nav_bar_open = !nav_bar_open;
-}
-
-//function loadMap(){
-//$.ajax({
-//    type: "POST",
-//    contentType: "application/json",
-//	url: "/js/getMap",
-//	success: function (data){
-//		$("#map").html(data);
-//	}
-//});
-//}
-
-// Initializes google map
-function initMap(){
-	
-	directionsService = new google.maps.DirectionsService();
-	directionsRenderer = new google.maps.DirectionsRenderer();
-	
-	const cpp = { lat: 34.058881, lng: -117.819725 };
-	
-	// The map, centered at CPP
-	map = new google.maps.Map(document.getElementById("map"), {
-		zoom: 12,
-		center: cpp,
-	});
-	
-	directionsRenderer.setMap(map);
-}
-
-// Calculates route between start and end
-function calcRoute() {
-	/*
-	var dest1 = document.getElementById('start').value	// Get start building (Ex: "Building 8")
-	var dest2 = document.getElementById('end').value;	// Get end building (Ex: "Building 1")
-	
-	let startIndex = getIndex(dest1);	// Get the index of the start building in the location array
-	let endIndex = getIndex(dest2);		// Get the index of the end building in the location array
-	
-	// Ensure the indices are valid
-	if((startIndex >= 0) && (endIndex >= 0) && (startIndex != endIndex)) {
-	
-		var start = { lat: locations[startIndex][1], lng: locations[startIndex][2] } // lat and lng of start building
-		var end = { lat: locations[endIndex][1], lng: locations[endIndex][2] }		 // lat and lng of end building
-		
-		var request = {
-			origin: start,
-			destination: end,
-			travelMode: 'WALKING'
-		};
-		
-		// API call
-		directionsService.route(request, function(result, status) {
-			if (status == 'OK') {
-				directionsRenderer.setDirections(result);
-			}
-		});
-	}
-	*/
-}
-
-// Returns the index of the specified building
-function getIndex(string) {
-	
-	for(let i = 0; i < locations.length; i++) {
-		if(locations[i][0].includes(string)) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-// Shows the walking directions from currentLocation to currentDestination
-function getDirections() {
-	
-	var start = { lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude }
-	var end = { lat: locations[currentDestination][1], lng: locations[currentDestination][2] }
-	
-	var request = {
-		origin: start,
-		destination: end,
-		travelMode: 'WALKING'
-	};
-	
-	// API call
-	directionsService.route(request, function(result, status) {
-		if (status == 'OK') {
-			directionsRenderer.setDirections(result);
-		}
-	});
-}
-
-// Creates a marker at the specified position
-// TODO
-function createMarker(position) {
-	
-	currentLocation = position;
-	
-	var lat = position.coords.latitude;
-	var lon = position.coords.longitude;
-	
-	markers.push(
-		new google.maps.Marker({
-			position: new google.maps.LatLng(lat, lon),
-			title: "Your Location",
-			map: map
-		})
-	);
-}
-
-// Handles click events for the gps button
-function gpsClick() {
-	
-	if(currentLocation == null) {
-		$('#currentLocation').attr('disabled', 'disabled');
-		getLocation();
-	} else {
-		currentLocation = null;
-		setColor("#D7D7D7");
-		$('#currentLocation').removeAttr("disabled");
-	}
-}
-
-function getLocation() {
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(createMarker);
-		setColor("#00FF00");
-	} else {
-		  x.innerHTML = "Geolocation is not supported by this browser.";
-	}
-}
-
-function setColor(color) {
-    
-	var property = document.getElementById("instantSearchGPSButton");
-	property.style.backgroundColor = color;
-	
-}
-
-function clearMarkers() {
-	for(let i = 0; i < markers.length; i++) {
-		
-		markers[i].setMap(null);
-		
-	}
-}
-
-function checkboxClick() {
-	
-	if(document.getElementById("checkbox").checked == true) {
-		
-		// Prompt for manual location or GPS
-		
-	}
-	
-}
-
-function findBuilding() {
-	
-	let bldgIndex = getIndex(document.getElementById("instantSearchBar").value);
-	
-	// Ensure the indices are valid
-	if(bldgIndex >= 0) {
-		
-		clearMarkers();
-		
-		if(document.getElementById("checkbox").checked == true) {
-			
-			currentDestination = bldgIndex;
-			getLocation();
-			getDirections();
-			
-		}
-		
-		markers.push(
-		    	new google.maps.Marker({
-		       	position: new google.maps.LatLng(locations[bldgIndex][1], locations[bldgIndex][2]),
-		      	title: locations[bldgIndex][0],
-		      	map: map
-		     })
-		);
-		
-	}
-}
-
-// Creates markers on the map for every building at CPP
-function createMarkers() {
-	/*
-	const markers = [];
-    
-    for (let i = 0; i < locations.length; i++) {
-    	markers.push(
-    		new google.maps.Marker({
-    	       	position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-    	     	title: locations[i][0],
-    	     	map: map
-    	    })
-    	);
-    }
-    
-    // Hiding a marker
-    markers[0].setMap(null);
-    */
-}
-
-// Temporary function for backend testing
-function getInfo() {
-	//console.log(document.getElementById("subject").value + ", " + document.getElementById("num").value);
-	$.ajax({
-        type: "GET",
-        contentType: "application/json",
-		url: "/sections/" + document.getElementById("subject").value + "/" + document.getElementById("num").value,
-		success: function (data){
-			
-			$("#list").empty();
-			
-			for(const [key, value] of Object.entries(data)) {
-				
-				var list = document.createElement("ul");
-				//console.log(`${key}: ${value}`);
-				for(const [key1, value1] of Object.entries(value)) {
-					
-					console.log(`${key1}: ${value1}`);
-					
-					if(key1.includes("time") || key1.includes("instructorLast") || (key1.includes("location") && (value1.toUpperCase() != ""))) {
-						
-						var li = document.createElement("li");
-						li.appendChild(document.createTextNode(`${value1}`));
-						list.appendChild(li);
-						
-					}
-				}
-				
-				var listItem = document.createElement("li");
-				listItem.appendChild(document.createTextNode(" "));
-				listItem.appendChild(list);
-				document.getElementById("list").appendChild(listItem);
-				
-			}
-			
-			//$("#classList").text(courses);
-		}
-	});
 }
 
 function adjustMapSize(){
@@ -326,6 +84,235 @@ function readCookies(c_name){
 		data = cookie_string.substring(begin + c_name.length + 1, end );
 	}
 	return data;
+}
+
+//function loadMap(){
+//$.ajax({
+//    type: "POST",
+//    contentType: "application/json",
+//	url: "/js/getMap",
+//	success: function (data){
+//		$("#map").html(data);
+//	}
+//});
+//}
+
+// Initializes google map
+function initMap(){
+	
+	directionsService = new google.maps.DirectionsService();
+	directionsRenderer = new google.maps.DirectionsRenderer();
+	
+	const cpp = { lat: 34.058881, lng: -117.819725 };
+	
+	// The map, centered at CPP
+	map = new google.maps.Map(document.getElementById("map"), {
+		zoom: 12,
+		center: cpp,
+	});
+	
+	directionsRenderer.setMap(map);
+}
+
+// Returns the index of the specified building
+function getBldgIndex(string) {
+	
+	for(let i = 0; i < locations.length; i++) {
+		
+		// Return the correct index if the building is found
+		if(locations[i][0].includes(string)) {
+			return i;
+		}
+	}
+	
+	// Return -1 if the building is not in the array
+	return -1;
+}
+
+// Displays the walking directions from currentLocation to currentDestination
+function getDirections() {
+	
+	var start = null;
+	var end = null;
+	
+	// Get the current destination from the search field
+	currentDestination = document.getElementById("instantSearchBar").value;
+	currentDestIndex = getBldgIndex(currentDestination);
+	
+	// If the manual location text field is not disabled, then GPS location isn't being used
+	if(document.getElementById("currentLocation").getAttribute("disabled") == null) {
+		
+		// Get the current location from the manual location text field
+		currentLocation = document.getElementById("currentLocation").value;
+		currentBldgIndex = getBldgIndex(currentLocation);
+		
+		// Set start and end locations if the current location and current destination are valid
+		if((currentBldgIndex >= 0) && (currentDestIndex >= 0) && (currentBldgIndex != currentDestIndex)) {
+			
+			start = { lat: locations[currentBldgIndex][1], lng: locations[currentBldgIndex][2] };
+			end = { lat: locations[currentDestIndex][1], lng: locations[currentDestIndex][2] };
+		}
+		
+	// GPS is being used
+	} else {
+		
+		if(currentDestIndex >= 0) {
+			
+			// Ensure the index is valid
+			start = { lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude };
+			end = { lat: locations[currentDestIndex][1], lng: locations[currentDestIndex][2] };
+		}
+	}
+	
+	// Display the walking route if start and end locations are provided
+	if((start != null) && (end != null)) {
+		var request = {
+				origin: start,
+				destination: end,
+				travelMode: "WALKING"
+		};
+		
+		// API call
+		directionsService.route(request, function(result, status) {
+			if (status == "OK") {
+				directionsRenderer.setDirections(result);
+			}
+		});
+	}
+}
+
+function setColor(color) {
+	var property = document.getElementById("instantSearchGPSButton");
+	property.style.backgroundColor = color;
+}
+
+function setCurrentLocation(position) {
+	currentLocation = position;
+}
+
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(setCurrentLocation);
+		setColor("#00FF00");
+		$("#currentLocation").attr("disabled", "disabled");
+	} else {
+		x.innerHTML = "Geolocation is not supported by this browser.";
+	}
+}
+
+function findBldg(bldgIndex) {
+	
+	// Ensure the index is valid
+	if(bldgIndex >= 0) {
+		markers.push(
+			new google.maps.Marker({
+				position: new google.maps.LatLng(locations[bldgIndex][1], locations[bldgIndex][2]),
+				title: locations[bldgIndex][0],
+				map: map
+			})
+		);
+	}
+}
+
+function clearMarkers() {
+	for(let i = 0; i < markers.length; i++) {
+		markers[i].setMap(null);
+	}
+	markers = [];
+}
+
+/* * * * * * * * * * * *
+ * =-=-=-=-=-=-=-=-=-= *
+ * Click Even Handlers *
+ * =-=-=-=-=-=-=-=-=-= *
+ * * * * * * * * * * * */
+
+function checkboxClick() {
+	
+	if(document.getElementById("checkbox").checked == true) {
+		
+		// Prompt for manual location or GPS
+		document.getElementById("manualCurrentLocation").style.display = "";
+		
+	} else {
+		
+		// Hide manual location controls
+		document.getElementById("manualCurrentLocation").style.display = "none";
+		
+	}
+}
+
+function searchBtnClick() {
+	
+	clearMarkers();
+	
+	if(document.getElementById("checkbox").checked == true) {
+		
+		getDirections();
+		
+	} else {
+		
+		directionsRenderer.set("directions", null);
+		findBldg(getBldgIndex(document.getElementById("instantSearchBar").value));
+		
+	}
+}
+
+function gpsClick() {
+	
+	// If the manual location text field is not disabled, then GPS location isn't being used
+	if(document.getElementById("currentLocation").getAttribute("disabled") == null) {
+		
+		// Set currentLocation as the user's gps location
+		// Disable the manual location text field if successful
+		// Set the background color of the button to green if successful
+		getLocation();
+		
+	} else {
+		currentLocation = null;							// reset current location
+		setColor("#D7D7D7");							// reset background color of button
+		$('#currentLocation').removeAttr("disabled");	// enable manual location text field
+	}
+}
+
+function getCourseInfo() {
+	$.ajax({
+        type: "GET",
+        contentType: "application/json",
+		url: "/sections/" + document.getElementById("subject").value + "/" + document.getElementById("num").value,
+		success: function (data){
+			
+			// Clear courses already being displayed
+			$("#list").empty();
+			
+			for(const [key, value] of Object.entries(data)) {
+				
+				// Create an unordered list representing the course
+				var course = document.createElement("ul");
+				
+				for(const [key1, value1] of Object.entries(value)) {
+					
+					// Add the course time, instructor last name, and location to the "course" unordered list
+					if(key1.includes("time") ||
+					   key1.includes("instructorLast") ||
+					   (key1.includes("location") && (value1.toUpperCase() != "")))
+					{
+						var courseAttribute = document.createElement("li");
+						courseAttribute.appendChild(document.createTextNode(`${value1}`));
+						course.appendChild(courseAttribute);
+					}
+				}
+				
+				var listItem = document.createElement("li");
+				listItem.appendChild(document.createTextNode("-=-=-=-=-=-=-=-=-=-=-=-=-"));	// separates courses with an empty line
+				
+				// Add the "course" unordered list as a list item of the list of courses
+				listItem.appendChild(course);
+				document.getElementById("list").appendChild(listItem);
+				
+			}
+		}
+	});
 }
 
 function loadLocations() {

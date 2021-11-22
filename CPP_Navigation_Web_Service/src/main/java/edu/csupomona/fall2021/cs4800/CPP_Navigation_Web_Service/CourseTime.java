@@ -1,5 +1,8 @@
 package edu.csupomona.fall2021.cs4800.CPP_Navigation_Web_Service;
 
+/**
+ * @author https://github.com/voidstarr/CPPScheduleAPI/blob/master/src/main/kotlin/com/broncomoredirect/api/CPPScheduleService.kt
+ */
 public enum CourseTime {
     ONE_A("01:00:00 AM"),
     TWO_AM("02:00:00 AM"),
