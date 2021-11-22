@@ -7,6 +7,8 @@ var directionsRenderer;
 var map;
 var locations;
 const markers = [];
+var currentLocation;
+var currentDestination;
 
 //make sure nothing triggers before the page is ready
 function init(){
@@ -18,6 +20,8 @@ function init(){
 	
 	//load in the map
 	//loadMap();
+	
+	//initialize the location array
 	loadLocations();
 	adjustMapSize();
 	readSavedClasses();
@@ -52,19 +56,22 @@ function toggleBar(){
 function initMap(){
 	
 	directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-    const cpp = { lat: 34.058881, lng: -117.819725 };
-    // The map, centered at CPP
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 12,
-      center: cpp,
-    });
-    directionsRenderer.setMap(map);
+	directionsRenderer = new google.maps.DirectionsRenderer();
+	
+	const cpp = { lat: 34.058881, lng: -117.819725 };
+	
+	// The map, centered at CPP
+	map = new google.maps.Map(document.getElementById("map"), {
+		zoom: 12,
+		center: cpp,
+	});
+	
+	directionsRenderer.setMap(map);
 }
 
 // Calculates route between start and end
 function calcRoute() {
-	///*
+	/*
 	var dest1 = document.getElementById('start').value	// Get start building (Ex: "Building 8")
 	var dest2 = document.getElementById('end').value;	// Get end building (Ex: "Building 1")
 	
@@ -90,34 +97,130 @@ function calcRoute() {
 			}
 		});
 	}
-	//*/
+	*/
 }
 
 // Returns the index of the specified building
 function getIndex(string) {
-	  ///*
-	  for(let i = 0; i < locations.length; i++) {
-		  if(locations[i][0].includes(string)) {
-			  return i;
-		  }
-	  }
-	  return -1;
-	  //*/
+	
+	for(let i = 0; i < locations.length; i++) {
+		if(locations[i][0].includes(string)) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+// Shows the walking directions from currentLocation to currentDestination
+function getDirections() {
+	
+	var start = { lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude }
+	var end = { lat: locations[currentDestination][1], lng: locations[currentDestination][2] }
+	
+	var request = {
+		origin: start,
+		destination: end,
+		travelMode: 'WALKING'
+	};
+	
+	// API call
+	directionsService.route(request, function(result, status) {
+		if (status == 'OK') {
+			directionsRenderer.setDirections(result);
+		}
+	});
+}
+
+// Creates a marker at the specified position
+// TODO
+function createMarker(position) {
+	
+	currentLocation = position;
+	
+	var lat = position.coords.latitude;
+	var lon = position.coords.longitude;
+	
+	markers.push(
+		new google.maps.Marker({
+			position: new google.maps.LatLng(lat, lon),
+			title: "Your Location",
+			map: map
+		})
+	);
+}
+
+// Handles click events for the gps button
+function gpsClick() {
+	
+	if(currentLocation == null) {
+		$('#currentLocation').attr('disabled', 'disabled');
+		getLocation();
+	} else {
+		currentLocation = null;
+		setColor("#D7D7D7");
+		$('#currentLocation').removeAttr("disabled");
+	}
+}
+
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(createMarker);
+		setColor("#00FF00");
+	} else {
+		  x.innerHTML = "Geolocation is not supported by this browser.";
+	}
+}
+
+function setColor(color) {
+    
+	var property = document.getElementById("instantSearchGPSButton");
+	property.style.backgroundColor = color;
+	
+}
+
+function clearMarkers() {
+	for(let i = 0; i < markers.length; i++) {
+		
+		markers[i].setMap(null);
+		
+	}
+}
+
+function checkboxClick() {
+	
+	if(document.getElementById("checkbox").checked == true) {
+		
+		// Prompt for manual location or GPS
+		
+	}
+	
 }
 
 function findBuilding() {
-	console.log(document.getElementById("instantSearchBar").value);
+	
 	let bldgIndex = getIndex(document.getElementById("instantSearchBar").value);
 	
 	// Ensure the indices are valid
 	if(bldgIndex >= 0) {
+		
+		clearMarkers();
+		
+		if(document.getElementById("checkbox").checked == true) {
+			
+			currentDestination = bldgIndex;
+			getLocation();
+			getDirections();
+			
+		}
+		
 		markers.push(
-	    	new google.maps.Marker({
-	           	position: new google.maps.LatLng(locations[bldgIndex][1], locations[bldgIndex][2]),
-	         	title: locations[bldgIndex][0],
-	         	map: map
-	        })
-	    );
+		    	new google.maps.Marker({
+		       	position: new google.maps.LatLng(locations[bldgIndex][1], locations[bldgIndex][2]),
+		      	title: locations[bldgIndex][0],
+		      	map: map
+		     })
+		);
+		
 	}
 }
 
@@ -149,21 +252,34 @@ function getInfo() {
         contentType: "application/json",
 		url: "/sections/" + document.getElementById("subject").value + "/" + document.getElementById("num").value,
 		success: function (data){
-			//$("#jsonTest").text(Object.entries(data));
-			let courses = "";
+			
+			$("#list").empty();
+			
 			for(const [key, value] of Object.entries(data)) {
+				
+				var list = document.createElement("ul");
 				//console.log(`${key}: ${value}`);
 				for(const [key1, value1] of Object.entries(value)) {
-					if(key1.includes("subject") || key1.includes("catalog") || key1.includes("time")) {
-						courses += `${key1}: ${value1}` + "\n";
-					} else if(key1.includes("location") && (value1.toUpperCase() != "")) {
-						courses += `${key1}: ${value1}` + "\n";
-						//console.log(`${key1}: ${value1}`);
+					
+					console.log(`${key1}: ${value1}`);
+					
+					if(key1.includes("time") || key1.includes("instructorLast") || (key1.includes("location") && (value1.toUpperCase() != ""))) {
+						
+						var li = document.createElement("li");
+						li.appendChild(document.createTextNode(`${value1}`));
+						list.appendChild(li);
+						
 					}
 				}
-				//console.log(Object.entries(value));
+				
+				var listItem = document.createElement("li");
+				listItem.appendChild(document.createTextNode(" "));
+				listItem.appendChild(list);
+				document.getElementById("list").appendChild(listItem);
+				
 			}
-			$("#classList").text(courses);
+			
+			//$("#classList").text(courses);
 		}
 	});
 }
