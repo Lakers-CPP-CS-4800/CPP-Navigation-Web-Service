@@ -138,3 +138,10 @@ body {
 	width: 20px;
 	height: 0;
 }
+
+nav {
+	height:300px;
+	width:100%;
+	overflow:hidden;
+	overflow-y:scroll;
+}

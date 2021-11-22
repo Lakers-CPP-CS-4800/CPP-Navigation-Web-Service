@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.*;
-
-// http://localhost:8080/sections/cs/4800
 
 /**
  * This class was HEAVILY inspired by the following repository:
@@ -27,166 +24,170 @@ import java.util.regex.*;
 @Service
 class CPPClassSearch {
     
-	public static List<SectionDataDto> getSections(Map<String, String> searchParameters) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
-    	
-    	ArrayList<SectionDataDto> sectionList = new ArrayList<>();
-    	WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
-//        webClient.options.isCssEnabled = false;
-//        webClient.options.isJavaScriptEnabled = false;
-        HtmlPage searchPage = webClient.getPage("https://schedule.cpp.edu");
-
-        for(Map.Entry<String, String> entry : searchParameters.entrySet()) {
-        	
-        	searchPage.getElementById(entry.getKey()).setAttribute("value", entry.getValue());
-        	System.out.println(entry);
-        	
-        }// end for
-        
-        HtmlSelect term = ((HtmlSelect) searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL").get(0));
-        HtmlOption opt = term.getOptionByValue(searchParameters.get("ctl00_ContentPlaceHolder1_TermDDL"));
-        term.setSelectedAttribute(opt, true);
-
-//        println(searchPage.getElementById("ctl00_ContentPlaceHolder1_TermDDL"));
-//
-//        println(searchParameters);
-
-        DomElement resetForm = searchPage.getElementById("ctl00_ContentPlaceHolder1_Button4");
-        DomElement submit = searchPage.getElementById("ctl00_ContentPlaceHolder1_SearchButton");
-        HtmlPage resultsPage = null;
-		try {
-			resultsPage = submit.click();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("submission error occurred");
-		}
-        //println(resultsPage.body.visibleText);
-        DomNodeList<HtmlElement> resultElements = ((DomElement)resultsPage.getByXPath("/html/body/main/div/section/form/div[3]/ol").get(0))//.getFirstElementChild()
-            .getElementsByTagName("li");
-        
-        for(HtmlElement entry : resultElements) {
-        	
-        	sectionList.add(extractSectionData(/*(DomElement)*/entry));
-        	//println(sectionList.last());
-        	
-        }// end for
-        
-        webClient.close();
-        return sectionList;
-    }
+	/**
+	 * Provides all of the course sections returned from schedule.cpp.edu based on the given search parameters.
+	 * @param searchParameters The given search parameters.
+	 * @return Course sections returned from schedule.cpp.edu.
+	 * @throws FailingHttpStatusCodeException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public static List<SectionDataDto> getSections(Map<String, String> searchParameters)
+			throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+		
+		// Course sections
+		ArrayList<SectionDataDto> sectionList = new ArrayList<>();
+		
+		WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
+		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
+		
+		HtmlPage searchPage = webClient.getPage("https://schedule.cpp.edu");
+		
+		// Fill in the search page with the search parameters
+		for(Map.Entry<String, String> searchParameter : searchParameters.entrySet()) {
+			
+			searchPage.getElementById(searchParameter.getKey()).setAttribute("value", searchParameter.getValue());
+			
+		}// end for
+		
+		// Get the current term
+		HtmlSelect term = ((HtmlSelect) searchPage.getElementsById("ctl00_ContentPlaceHolder1_TermDDL").get(0));
+		
+		// Set the selected term as the current term
+		HtmlOption opt = term.getOptionByValue(searchParameters.get("ctl00_ContentPlaceHolder1_TermDDL"));
+		term.setSelectedAttribute(opt, true);
+		
+		// The search button
+		DomElement search = searchPage.getElementById("ctl00_ContentPlaceHolder1_SearchButton");
+		
+		// Get search results from schedule.cpp.edu
+		HtmlPage resultsPage = search.click();
+		
+		// Get course sections as elements
+		DomNodeList<HtmlElement> resultElements = ((DomElement)resultsPage.getByXPath("/html/body/main/div/section/form/div[3]/ol").get(0))
+			.getElementsByTagName("li");
+		
+		// Extract course data from elements
+		for(HtmlElement course : resultElements) {
+			
+			sectionList.add(extractSectionData(course));
+			
+		}// end for
+		
+		webClient.close();
+		return sectionList;
+		
+	}// end getSections
 	
+	/**
+	 * Extracts section data from the specified dom element.
+	 * @param sectionElement The specified dom element.
+	 * @return Section data of the specified element.
+	 */
 	public static SectionDataDto extractSectionData(DomElement sectionElement) {
-        
-    	DomNodeList<HtmlElement> sectionTableData = sectionElement.getElementsByTagName("td");
-        var course = sectionElement.getFirstElementChild();
-        
-        boolean prevWasSpace = false;
-        String timeText = sectionTableData.get(4).asNormalizedText();
-        String parsedText = "";
-        for(int i = 0; i < timeText.length(); i++) {
-        	
-        	if(!prevWasSpace) {
-        		
-        		if(timeText.charAt(i) == ' ') {
-            		
-            		prevWasSpace = true;
-            		
-            	}// end if
-        		
-        		parsedText += timeText.charAt(i);
-        		
-        	} else if(timeText.charAt(i) != ' ') {
-        		
-        		prevWasSpace = false;
-        		parsedText += timeText.charAt(i);
-        		
-        	}// end if
-        	
-        }// end for
-        
-        return new SectionDataDto (
-        		course.asNormalizedText().split(" ")[0], // subject
-                course.asNormalizedText().split(" ")[1], // catalog #
-                sectionTableData.get(8).getTextContent().split(",")[0].trim(), // instructor last
-                sectionTableData.get(8).getTextContent().split(",")[1].trim(), // instructor first
-                //sectionTableData.get(4).asNormalizedText().replace(Regex("\\s+"), " ").replace("–", "-"),
-                parsedText.replace("–", "-"), // time
-                sectionTableData.get(5).getTextContent().trim() // location
-
-            /*
-            sectionNumber = course.nextSibling.asNormalizedText().split(' ')[1],
-            classNumber = sectionTableData[0].textContent.trim(),
-            capacity = sectionTableData[1].textContent.trim().toIntOrNull(),
-            title = sectionTableData[2].textContent.trim(),
-            units = sectionTableData[3].textContent.trim().toIntOrNull(),
-            time = sectionTableData[4].asNormalizedText().replace(Regex("\\s+"), " ").replace("–", "-"),
-            location = sectionTableData[5].textContent.trim(),
-            date = sectionTableData[6].textContent.trim(),
-            session = sectionTableData[7].textContent.trim(),
-            mode = sectionTableData[9].textContent.split(",")[1].trim(),
-            component = sectionTableData[9].textContent.split(",")[0].trim()
-            */
-
-        );
-    }
+		
+		DomNodeList<HtmlElement> sectionTableData = sectionElement.getElementsByTagName("td");
+		DomElement course = sectionElement.getFirstElementChild();
+		
+		// Initialize variables for parsing the course time
+		boolean prevWasSpace = false;
+		String timeText = sectionTableData.get(4).asNormalizedText();
+		String parsedText = "";
+		
+		// Remove duplicate ' ' characters from timeText
+		for(int i = 0; i < timeText.length(); i++) {
+			
+			// Don't count extra spaces
+			if(!prevWasSpace) {
+				
+				// Acknowledge that a space is being added
+				if(timeText.charAt(i) == ' ') {
+					
+					prevWasSpace = true;
+					
+				}// end if
+				
+				parsedText += timeText.charAt(i);
+				
+			// Add all characters that are not duplicate spaces
+			} else if(timeText.charAt(i) != ' ') {
+				
+				prevWasSpace = false;
+				parsedText += timeText.charAt(i);
+				
+			}// end if
+			
+		}// end for
+		
+		return new SectionDataDto (
+				course.asNormalizedText().split(" ")[0], 						// subject
+				course.asNormalizedText().split(" ")[1], 						// catalog #
+				sectionTableData.get(8).getTextContent().split(",")[0].trim(),	// instructor last
+				sectionTableData.get(8).getTextContent().split(",")[1].trim(),	// instructor first
+				parsedText.replace("–", "-"),									// time
+				sectionTableData.get(5).getTextContent().trim()					// location
+		);
+		
+	}// end extractSectionData
 	
+	/**
+	 * Associates course section parameters with their respective html elements in schedule.cpp.edu.
+	 * @param subject The course subject.
+	 * @param catalogNumber The course catalog number.
+	 * @param instructor The course instructor.
+	 * @param times The course time.
+	 * @return A hash map where each key represents an html element in schedule.cpp.edu and each value is
+	 * the user input.
+	 */
 	public static HashMap<String, String> buildSearchParams(
-	    ClassSubject subject,
-	    String catalogNumber,
-	    //ArrayList<ClassDays> possibleDays,
-	    //CourseTime startTime,
-	    //CourseTime endTime,
-	    String instructor,
-	    CourseTime ... times
+		ClassSubject subject,
+		String catalogNumber,
+		String instructor,
+		CourseTime ... times
 	) {
 		HashMap<String, String> params = new HashMap<>();
-	    params.put("ctl00_ContentPlaceHolder1_TermDDL", "2217");
-	    params.put("ctl00_ContentPlaceHolder1_ClassSubject", subject != null ? subject.name() : "cs");
-	    params.put("ctl00_ContentPlaceHolder1_CatalogNumber", catalogNumber != null ? catalogNumber : "");
-	    //params["ctl00_ContentPlaceHolder1_Description"] = title ?: "";
-	    //params["ctl00_ContentPlaceHolder1_CourseComponentDDL"] = courseComponent?.value ?: "Any Component"
-	    //params["ctl00_ContentPlaceHolder1_CourseAttributeDDL"] = courseAttribute?.value ?: "Any Attribute"
-	    //params["ctl00_ContentPlaceHolder1_CourseCareerDDL"] = courseCareer?.value ?: "Any Career"
-	    //params["ctl00_ContentPlaceHolder1_InstModesDDL"] = instructionMode?.value ?: "Any Mode"
-	    //params["ctl00_ContentPlaceHolder1_SessionDDL"] = courseSession?.value ?: "Any Session"
-	    params.put("ctl00_ContentPlaceHolder1_StartTime", times.length > 1 ? times[0].toString() : "ANY");// = startTime?.value ?: "ANY";
-	    params.put("ctl00_ContentPlaceHolder1_EndTime", times.length > 1 ? times[1].toString() : "ANY");
-	    params.put("ctl00_ContentPlaceHolder1_Instructor", instructor != null ? instructor : "");
-
-	    return params;
-	}
-}
+		params.put("ctl00_ContentPlaceHolder1_TermDDL", "2217");	// set the term to Fall 2021
+		params.put("ctl00_ContentPlaceHolder1_ClassSubject", subject != null ? subject.name() : "cs");
+		params.put("ctl00_ContentPlaceHolder1_CatalogNumber", catalogNumber != null ? catalogNumber : "");
+		params.put("ctl00_ContentPlaceHolder1_StartTime", times.length > 1 ? times[0].toString() : "ANY");
+		params.put("ctl00_ContentPlaceHolder1_EndTime", times.length > 1 ? times[1].toString() : "ANY");
+		params.put("ctl00_ContentPlaceHolder1_Instructor", instructor != null ? instructor : "");
+		
+		return params;
+		
+	}// end buildSearchParams
+	
+}// end CPPClassSearch
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 class SectionDataDto {
-    String subject;
-    String catalogNumber;
-    String instructorLast;
-    String instructorFirst;
-    String time;
-    String location;
-
-    /*
-    String classNumber;
-    String sectionNumber;
-    int capacity;
-    String title;
-    int units;
-    String time;
-    String location;
-    String date;
-    String session;
-    String mode;
-    String component;
-    */
-    
-    SectionDataDto(String subject, String catalogNumber, String instructorLast, String instructorFirst, String time, String location) {
-    	
-    	this.subject = subject;
-    	this.catalogNumber = catalogNumber;
-    	this.instructorLast = instructorLast;
-    	this.instructorFirst = instructorFirst;
-    	this.time = time;
-    	this.location = location;
-    	
-    }
-}
+	
+	String subject;
+	String catalogNumber;
+	String instructorLast;
+	String instructorFirst;
+	String time;
+	String location;
+	
+	/**
+	 * Instantiates a new SectionDataDto object with the specified parameters.
+	 * @param subject The course subject.
+	 * @param catalogNumber The course catalog number.
+	 * @param instructorLast The course instructor's last name.
+	 * @param instructorFirst The course instructor's first name.
+	 * @param time The course time.
+	 * @param location The course location.
+	 */
+	SectionDataDto(String subject, String catalogNumber, String instructorLast, String instructorFirst, String time, String location) {
+		
+		this.subject = subject;
+		this.catalogNumber = catalogNumber;
+		this.instructorLast = instructorLast;
+		this.instructorFirst = instructorFirst;
+		this.time = time;
+		this.location = location;
+		
+	}// end constructor
+	
+}// end SectionDataDto
