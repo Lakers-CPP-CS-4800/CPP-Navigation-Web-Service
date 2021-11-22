@@ -11,4 +11,5 @@ public class CppNavigationWebServiceApplication {
 	}
 
 }
-// TODO parse json data (line 131 of app.js)
+// TODO reveal hidden menu when check box is selected
+// TODO set manual location to current location
