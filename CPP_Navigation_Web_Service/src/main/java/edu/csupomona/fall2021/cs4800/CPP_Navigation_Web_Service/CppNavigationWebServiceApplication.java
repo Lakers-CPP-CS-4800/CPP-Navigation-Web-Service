@@ -11,5 +11,3 @@ public class CppNavigationWebServiceApplication {
 	}
 
 }
-// TODO reveal hidden menu when check box is selected
-// TODO set manual location to current location

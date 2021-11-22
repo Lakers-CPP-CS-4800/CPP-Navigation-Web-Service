@@ -81,6 +81,8 @@ public class WebController {
 		return text;
 	}
 	
+	// This method was taken from the following repository:
+	// https://github.com/voidstarr/CPPScheduleAPI/blob/master/src/main/kotlin/com/broncomoredirect/api/BroncoMoreDirectAPIApplication.kt
 	@GetMapping("/sections/{subject}/{catalogNumber}")
 	public ResponseEntity<List<SectionDataDto>> searchSections(
 		@PathVariable("subject") String subject,
