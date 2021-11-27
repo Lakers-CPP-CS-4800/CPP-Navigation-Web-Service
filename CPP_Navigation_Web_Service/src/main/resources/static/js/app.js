@@ -116,11 +116,10 @@ function initMap(){
 
 // Returns the index of the specified building
 function getBldgIndex(string) {
-	
+	var lc_string = string.toLowerCase()
 	for(let i = 0; i < locations.length; i++) {
-		
 		// Return the correct index if the building is found
-		if(locations[i][0].includes(string)) {
+		if(locations[i]['name'].includes(lc_string)) {
 			return i;
 		}
 	}
@@ -149,8 +148,8 @@ function getDirections() {
 		// Set start and end locations if the current location and current destination are valid
 		if((currentBldgIndex >= 0) && (currentDestIndex >= 0) && (currentBldgIndex != currentDestIndex)) {
 			
-			start = { lat: locations[currentBldgIndex][1], lng: locations[currentBldgIndex][2] };
-			end = { lat: locations[currentDestIndex][1], lng: locations[currentDestIndex][2] };
+			start = { lat: locations[currentBldgIndex]['latitude'], lng: locations[currentBldgIndex]['longitude'] };
+			end = { lat: locations[currentDestIndex]['latitude'], lng: locations[currentDestIndex]['longitude'] };
 		}
 		
 	// GPS is being used
@@ -206,8 +205,8 @@ function findBldg(bldgIndex) {
 	if(bldgIndex >= 0) {
 		markers.push(
 			new google.maps.Marker({
-				position: new google.maps.LatLng(locations[bldgIndex][1], locations[bldgIndex][2]),
-				title: locations[bldgIndex][0],
+				position: new google.maps.LatLng(locations[bldgIndex]['latitude'], locations[bldgIndex]['longitude']),
+				title: locations[bldgIndex]['name'],
 				map: map
 			})
 		);
@@ -223,7 +222,7 @@ function clearMarkers() {
 
 /* * * * * * * * * * * *
  * =-=-=-=-=-=-=-=-=-= *
- * Click Even Handlers *
+ * Click Event Handlers*
  * =-=-=-=-=-=-=-=-=-= *
  * * * * * * * * * * * */
 
@@ -314,8 +313,19 @@ function getCourseInfo() {
 		}
 	});
 }
+function loadLocations(){
+	$.ajax({
+	    type: "POST",
+	    contentType: "application/json",
+		url: "/js/getLocations",
+		success: function (data){
+			locations = JSON.parse(data);
+			locations.forEach(element => element['name'] = element['name'].toLowerCase());
+		}
+	});
+}
 
-function loadLocations() {
+/*function loadLocations() {
 	locations = [
 		["Building 1: Building One", 34.059631520066574, -117.82426000336348],
 		["Building 2: Huntley College of Agriculture", 34.05760344926454, -117.8267557370109],
@@ -452,4 +462,4 @@ function loadLocations() {
 		["Building 74: Secoya Hall", 34.05633113310398, -117.81748282136374],
 		["Building 81A: Environmental Health and Safety", 34.058796001674054, -117.80884321418458]
 	];
-}
+}*/

@@ -65,6 +65,12 @@ public class WebController {
 		return map;
 	}
 	
+	@PostMapping("/js/getLocations")
+	public String getLocations() {
+		String locations = readFile("/static/LocationsJSON.txt");
+		return locations;
+	}
+	
 	public String readFile(String fileName) {
 		Resource resource  = new ClassPathResource(fileName);
 		String text;
