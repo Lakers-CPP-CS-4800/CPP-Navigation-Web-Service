@@ -78,11 +78,6 @@ public class WebController {
 		);
 	}
 	
-	@PostMapping("/key")
-	public String getkey() {
-		return CppNavigationWebServiceApplication.key;
-	}
-	
 	/*@GetMapping("/jordantbui/guava")
 	public boolean compareNull() {
 		return Objects.equal(null, "a"); // returns false

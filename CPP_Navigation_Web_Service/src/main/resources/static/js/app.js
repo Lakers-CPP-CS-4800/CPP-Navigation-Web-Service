@@ -20,7 +20,6 @@ function init(){
 	
 	//initialize the location array
 	loadLocations();
-	loadKey();
 	
 	adjustMapSize();
 	readSavedClasses();
@@ -82,21 +81,6 @@ function readCookies(c_name){
 		data = cookie_string.substring(begin + c_name.length + 1, end );
 	}
 	return data;
-}
-
-function loadKey() {
-	$.ajax({
-		type: "POST",
-		contentType: "application/json",
-		url: "/key",
-		success: function (key){
-			
-			var googleMapsScript = document.createElement("script");
-			googleMapsScript.setAttribute("src", "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&libraries=&v=weekly");
-			googleMapsScript.asnyc = true;
-			document.body.appendChild(googleMapsScript);
-		}
-	});
 }
 
 // Initializes google map
