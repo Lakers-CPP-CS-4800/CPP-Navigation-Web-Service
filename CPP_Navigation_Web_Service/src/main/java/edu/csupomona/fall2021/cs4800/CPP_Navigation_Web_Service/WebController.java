@@ -59,28 +59,6 @@ public class WebController {
 		return "Our dependencies are managed by maven in " + FilenameUtils.getName(path) + " .";
 	}
 	
-	@PostMapping("/js/getMap")
-	public String getMap() {
-		String map = readFile("/static/Temp.txt");
-		return map;
-	}
-	
-	public String readFile(String fileName) {
-		Resource resource  = new ClassPathResource(fileName);
-		String text;
-		
-		try {
-			InputStream inputStream = resource.getInputStream();
-			text = new String(inputStream.readAllBytes());
-			inputStream.close();
-		}
-		catch(Exception e){
-			text = e.toString();
-		}
-		
-		return text;
-	}
-	
 	// This method was taken from the following repository:
 	// https://github.com/voidstarr/CPPScheduleAPI/blob/master/src/main/kotlin/com/broncomoredirect/api/BroncoMoreDirectAPIApplication.kt
 	@GetMapping("/sections/{subject}/{catalogNumber}")

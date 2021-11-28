@@ -18,9 +18,6 @@ function init(){
 		toggleBar();
 	});
 	
-	//load in the map
-	//loadMap();
-	
 	//initialize the location array
 	loadLocations();
 	
@@ -85,17 +82,6 @@ function readCookies(c_name){
 	}
 	return data;
 }
-
-//function loadMap(){
-//$.ajax({
-//    type: "POST",
-//    contentType: "application/json",
-//	url: "/js/getMap",
-//	success: function (data){
-//		$("#map").html(data);
-//	}
-//});
-//}
 
 // Initializes google map
 function initMap(){
