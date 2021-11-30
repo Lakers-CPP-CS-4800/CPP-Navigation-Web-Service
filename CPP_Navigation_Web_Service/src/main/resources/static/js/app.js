@@ -9,6 +9,7 @@ var locations;
 var markers = [];
 var currentLocation;
 var currentDestination;
+var userPosition;
 
 //make sure nothing triggers before the page is ready
 function init(){
@@ -145,7 +146,7 @@ function getDirections() {
 			
 			// Ensure the index is valid
 			start = { lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude };
-			end = { lat: locations[currentDestIndex][1], lng: locations[currentDestIndex][2] };
+			end = { lat: locations[currentDestIndex]['latitude'], lng: locations[currentDestIndex]['longitude'] };
 		}
 	}
 	
@@ -309,6 +310,54 @@ function loadLocations(){
 			locations.forEach(element => element['name'] = element['name'].toLowerCase());
 		}
 	});
+}
+
+function getCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(recordPosition, gpsError);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function recordPosition(position){
+	userPosition = {'latitude': position.coords.latitude , 'longitude': position.coords.longitude};
+	$("#gpsSuccess").show();
+	showGpsMenu();
+}
+
+function gpsError(error){
+	var text = 'an unknown error has occoured'
+		switch(error.code) {
+	case error.PERMISSION_DENIED:
+		text = "User denied the request for Geolocation."
+		break;
+	case error.POSITION_UNAVAILABLE:
+		text = "Location information is unavailable."
+		break;
+    case error.TIMEOUT:
+		text = "The request to get user location timed out."
+		break;
+    case error.UNKNOWN_ERROR:
+		text = "An unknown error occurred."
+		break;
+	}
+	$("#gpsError").show();
+	$("#gpsErrorText").text(text);
+	showGpsMenu();
+}
+
+function showGpsMenu(){
+	$("#gpsMenu").show();
+	$("#backdrop").show();
+}
+
+function hideGpsMenu(){
+	$("#gpsMenu").hide();
+	$("#backdrop").hide();
+	$("#gpsSuccess").hide();
+	$("#gpsError").hide();
+	$("#gpsErrorText").hide();
 }
 
 /*function loadLocations() {

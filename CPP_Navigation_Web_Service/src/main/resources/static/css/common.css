@@ -73,6 +73,30 @@ body {
 	padding-top: 10px;
 }
 
+#gpsMenu {
+	z-index: 5;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	height: 150px;
+	padding: 10px;
+	position: fixed;
+	background-color: rgba(26, 13, 0);
+	opacity: 0.95;
+	color: white;
+	transition: 0.3s;
+	border-radius: 3px;
+}
+
+#gpsSuccess{
+	padding-top: 30px;
+	text-align: center;
+}
+
+#gpsError{
+	padding-top: 30px;
+}
 
 #classMenu {
 	z-index: 5;
@@ -105,7 +129,7 @@ body {
 
 #mainSearchBar {
 	width: 450px;
-	height: 50px;
+	height: 80px;
 	background-color: #ECECEC;
 	padding: 10px 10px;
 }

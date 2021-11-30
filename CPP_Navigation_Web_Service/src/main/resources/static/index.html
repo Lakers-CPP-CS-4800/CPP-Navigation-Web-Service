@@ -21,6 +21,19 @@
 <body>
 
 	<div class="content content-container">
+		<div id="gpsMenu" style="display:none">
+			<button class="top-right" onclick="hideGpsMenu()">x</button>
+			<div id="gpsSuccess" style="display:none">
+				<button class="btn btn-info" onclick="hideGpsMenu()"> Display current location</button>
+				<br>
+				<br>
+				<button class="btn btn-info" onclick="hideGpsMenu()"> Use current location for navigation</button>
+			</div>
+			<div id="gpsError" style="display:none">
+				<span id="gpsErrorText"></span>
+			</div>
+		</div>
+	
 		<div id="classMenu" style="display:none">
 			<button class="top-right" onclick="hideClassMenu()">x</button>
 			<input id="classSearchBar" class="search-bar" type="text" placeholder="search for a class number or room id">
@@ -34,12 +47,19 @@
 				<button id="instantSearchButton" onclick="searchBtnClick()">
 					<i class="fas fa-search"></i>
 					<span class="tooltip">Search</span>
+					
 				</button>
-				
+				<span>|</span>
+				<!-- <button id="gpsButton" onclick="getCurrentLocation()">
+					<i class="far fa-compass"></i>
+					<span class="tooltip">Use Current Location</span>
+					
+				</button> -->
+				<hr style="margin: 5px 0;" />
 				<!-- Checkbox -->
 				<div>
 					<input type="checkbox" id="checkbox" name="checkbox" onclick="checkboxClick()">
-					<label for="checkbox">Get directions to building</label>
+					<label for="checkbox">Navigation</label>
 				</div>
 				
 				<!-- Current location text field and GPS button -->
