@@ -16,6 +16,31 @@
 		overflow:hidden;
 		overflow-y:scroll;
 	}
+	
+	#subjectLabel{
+	display:inline-block;
+	width:80px;
+	margin-right:5px;
+	text-align:right;
+	}
+	
+	#numLabel{
+	display:inline-block;
+	width:80px;
+	margin-right:5px;
+	text-align:right;
+	}
+
+	input{
+	
+	}
+
+	fieldset{
+	border:none;
+	width:500px;
+	margin:0px auto;
+	}
+	
 </style>
 
 <body>
@@ -69,15 +94,15 @@
 				<hr/>
 				<button id="cppLoginButton" class="btn btn-info" style="margin-bottom: 10px; visibility:hidden;">Login</button>
 				<br/>
-				<label for="classList" style="font-weight: bold; float:none;">Saved Classes</label>
+				<label for="classList" style="font-weight: bold; float:none; visibility:hidden;">Saved Classes</label>
 				<span class="spacer"></span>
-				<button id="addClass" class="btn btn-success" onclick="showClassMenu()">+</button>
+				<!-- <button id="addClass" class="btn btn-success" onclick="showClassMenu()">+</button> -->
 				<div id="classList">
 					<nav>
 						<ul id="list">
 							
 						</ul>
-					</nav>			
+					</nav>
 				</div>
 			</div>
 			
@@ -86,10 +111,12 @@
 				<button id="button" onclick="getCourseInfo()">
 					Get Classes
 				</button>
-				<label for="subject">Subject: </label>
-				<input type="text" id="subject">
-				<label for="num">Catalog #: </label>
-				<input type="text" id="num">
+				<fieldset>
+					<p><label id="subjectLabel" for="subject">   Subject:</label>
+					<input type="text" id="subject"></p>
+					<p><label id="numLabel" for="num">Catalog #:</label>
+					<input type="text" id="num"></p>
+				</fieldset>
 			</div>
 			
 		</div>
