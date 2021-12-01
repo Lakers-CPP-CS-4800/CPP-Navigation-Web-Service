@@ -133,9 +133,35 @@ body {
 	padding: 10px 10px;
 }
 
+#startingSearchBar {
+	margin-top: 2px;
+	width: 450px;
+	height: 80px;
+	background-color: #ECECEC;
+	padding: 10px 10px;
+}
+
 #instantSearchBar {
 	width: 350px;
 	background-color: inherit;
+	border: none;
+	outline: none;
+}
+
+#currentLocation {
+	width: 350px;
+	background-color: inherit;
+	border: none;
+	outline: none;
+}
+
+#currentLocationBlocker {
+	margin: 0 0;
+	left:30px;
+	width: 350px;
+	position: absolute;
+	background-color: inherit;
+	color:#116127;
 	border: none;
 	outline: none;
 }

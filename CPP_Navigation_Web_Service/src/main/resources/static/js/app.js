@@ -178,9 +178,10 @@ function setCurrentLocation(position) {
 
 function getLocation() {
 	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(setCurrentLocation);
+		navigator.geolocation.getCurrentPosition(setCurrentLocation,gpsError);
 		setColor("#00FF00");
 		$("#currentLocation").attr("disabled", "disabled");
+		$("#currentLocationBlocker").show();
 	} else {
 		x.innerHTML = "Geolocation is not supported by this browser.";
 	}
@@ -218,12 +219,12 @@ function checkboxClick() {
 	if(document.getElementById("checkbox").checked == true) {
 		
 		// Prompt for manual location or GPS
-		document.getElementById("manualCurrentLocation").style.display = "";
+		document.getElementById("startingSearchBar").style.display = "";
 		
 	} else {
 		
 		// Hide manual location controls
-		document.getElementById("manualCurrentLocation").style.display = "none";
+		document.getElementById("startingSearchBar").style.display = "none";
 		
 	}
 }
@@ -249,15 +250,16 @@ function gpsClick() {
 	// If the manual location text field is not disabled, then GPS location isn't being used
 	if(document.getElementById("currentLocation").getAttribute("disabled") == null) {
 		
-		// Set currentLocation as the user's gps location
+		// Set currentLocationBar as the user's gps location
 		// Disable the manual location text field if successful
 		// Set the background color of the button to green if successful
 		getLocation();
 		
 	} else {
 		currentLocation = null;							// reset current location
-		setColor("#D7D7D7");							// reset background color of button
+		setColor("#ECECEC");							// reset background color of button
 		$('#currentLocation').removeAttr("disabled");	// enable manual location text field
+		$("#currentLocationBlocker").hide();
 	}
 }
 
@@ -312,14 +314,6 @@ function loadLocations(){
 	});
 }
 
-function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(recordPosition, gpsError);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
-
 function recordPosition(position){
 	userPosition = {'latitude': position.coords.latitude , 'longitude': position.coords.longitude};
 	$("#gpsSuccess").show();
@@ -327,7 +321,6 @@ function recordPosition(position){
 }
 
 function gpsError(error){
-	var text = 'an unknown error has occoured'
 		switch(error.code) {
 	case error.PERMISSION_DENIED:
 		text = "User denied the request for Geolocation."
@@ -357,7 +350,7 @@ function hideGpsMenu(){
 	$("#backdrop").hide();
 	$("#gpsSuccess").hide();
 	$("#gpsError").hide();
-	$("#gpsErrorText").hide();
+	$("#gpsErrorText").text("");
 }
 
 /*function loadLocations() {

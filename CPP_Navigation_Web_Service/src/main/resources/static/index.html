@@ -69,17 +69,11 @@
 		<div id="topBar" class="">
 			<div id="mainSearchBar" class="search-bar">
 				<input id="instantSearchBar"  type="text" placeholder="search for a building or coordinates">
-				<button id="instantSearchButton" onclick="searchBtnClick()">
+				<button id="instantSearchButton" style="background-color:#ECECEC;" onclick="searchBtnClick()">
 					<i class="fas fa-search"></i>
 					<span class="tooltip">Search</span>
 					
 				</button>
-				<span>|</span>
-				<!-- <button id="gpsButton" onclick="getCurrentLocation()">
-					<i class="far fa-compass"></i>
-					<span class="tooltip">Use Current Location</span>
-					
-				</button> -->
 				<hr style="margin: 5px 0;" />
 				<!-- Checkbox -->
 				<div>
@@ -87,19 +81,28 @@
 					<label for="checkbox">Navigation</label>
 				</div>
 				
+			</div>
+			<div id="startingSearchBar" class="search-bar" style="display: none">
+				<label for="currentLocation">Current Location: </label>
+				<hr style="margin: 5px 0;" />
+				<input id="currentLocation"  type="text" placeholder="search for a building or coordinates">
+				<span id="currentLocationBlocker" style="display:none;">Currently using GPS for Location</span>
+				<span>|</span>
+				<button id="instantSearchGPSButton" style="background-color:#ECECEC;" onclick="gpsClick()">
+					<i class="far fa-compass"></i>
+					<span class="tooltip">Use Current Location</span>
+					
+				</button>
+				
 				<!-- Current location text field and GPS button -->
 				<div id="manualCurrentLocation" style="display: none">
 					<label for="currentLocation">Current Location: </label>
 					
 					<input type="text" id="currentLocation">
-					
-					<button id="instantSearchGPSButton" onclick="gpsClick()">
-						<i class="fas fa-location-arrow"></i>
-						<span class="tooltip">Use Current Location</span>
-					</button>
 				</div>
 				
 			</div>
+			
 		</div>
 
 		<div id="navBar" class="top-right">
