@@ -181,6 +181,16 @@ body {
 	transition: 0.3s;
 }
 
+#logo{
+	z-index: 1;
+	top: calc(100% - 50px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+  	height: auto;
+  	position:fixed;
+}
+
 .dropdown {
 	position: relative;
 	display: inline-block;
