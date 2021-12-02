@@ -69,6 +69,10 @@
 		<div id="topBar" class="">
 			<div id="mainSearchBar" class="search-bar">
 				<input id="instantSearchBar"  type="text" placeholder="search for a building or coordinates">
+				<div class="dropdown" style=" top:10px; left:-360px;">
+					<div id="instantSearchDropdown" class="dropdown-option" style="display:none; width:400px;">
+					</div>
+				</div>
 				<button id="instantSearchButton" style="background-color:#ECECEC;" onclick="searchBtnClick()">
 					<i class="fas fa-search"></i>
 					<span class="tooltip">Search</span>
@@ -87,6 +91,10 @@
 				<hr style="margin: 5px 0;" />
 				<input id="currentLocation"  type="text" placeholder="search for a building or coordinates">
 				<span id="currentLocationBlocker" style="display:none;">Currently using GPS for Location</span>
+				<div class="dropdown" style=" top:10px; left:-360px;">
+					<div id="currentLocationDropdown" class="dropdown-option" style="display:none; width:400px;">
+					</div>
+				</div>
 				<span>|</span>
 				<button id="instantSearchGPSButton" style="background-color:#ECECEC;" onclick="gpsClick()">
 					<i class="far fa-compass"></i>

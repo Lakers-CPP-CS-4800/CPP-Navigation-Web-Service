@@ -24,9 +24,8 @@ function init(){
 	
 	adjustMapSize();
 	readSavedClasses();
-	/*if(window.innerWidth >= 800){
-		toggleBar();
-	}*/
+	initializeSearch("#instantSearchBar","#instantSearchDropdown");
+	initializeSearch("#currentLocation","#currentLocationDropdown");
 }
 
 function toggleBar(){
@@ -103,10 +102,10 @@ function initMap(){
 
 // Returns the index of the specified building
 function getBldgIndex(string) {
-	var lc_string = string.toLowerCase()
+	var lc_string = string.toLowerCase();
 	for(let i = 0; i < locations.length; i++) {
 		// Return the correct index if the building is found
-		if(locations[i]['name'].includes(lc_string)) {
+		if(locations[i]['name'].toLowerCase().includes(lc_string)) {
 			return i;
 		}
 	}
@@ -309,7 +308,6 @@ function loadLocations(){
 		url: "/js/getLocations",
 		success: function (data){
 			locations = JSON.parse(data);
-			locations.forEach(element => element['name'] = element['name'].toLowerCase());
 		}
 	});
 }
@@ -351,6 +349,38 @@ function hideGpsMenu(){
 	$("#gpsSuccess").hide();
 	$("#gpsError").hide();
 	$("#gpsErrorText").text("");
+}
+
+function initializeSearch(searchbar,dropdown){
+	$(searchbar).focusin(function(){
+		$(dropdown).show();
+	});
+	$(searchbar).keyup(function(){
+		var lc_string = $(searchbar).val().toLowerCase();
+		var contain = locations.filter(location => location.name.toLowerCase().includes(lc_string));
+		
+		$(dropdown).empty();
+		
+		var x = 0;
+		while(x < 5 && x< contain.length){
+			let element = document.createElement("button");
+			element.innerText = contain[x].name;
+			element.value = contain[x].name;
+			element.addEventListener("click", function(){
+				$(searchbar).val(element.value);
+				$(searchbar).trigger("keyup");
+			});
+			
+			$(dropdown).append(element);
+			x++;
+		}
+		
+	});
+	$(document).on("click", function(event){
+        if(!$(event.target).closest(searchbar).length){
+		$(dropdown).hide();
+		}
+	});
 }
 
 /*function loadLocations() {

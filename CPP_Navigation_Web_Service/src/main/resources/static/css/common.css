@@ -181,7 +181,33 @@ body {
 	transition: 0.3s;
 }
 
-.drop-shadow
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-option {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+	z-index: 1;
+}
+
+.dropdown-option button {
+	width:inherit;
+	color: black;
+	padding: 12px 16px;
+	text-align: left;
+	text-decoration: none;
+	display: block;
+}
+	.dropdown button:hover {
+		background-color: #ddd;
+	}
+
 
 .spacer {
 	width: 20px;
